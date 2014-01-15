@@ -79,8 +79,9 @@
           <img class="featurette-image img-responsive" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
         </div>
         <div class="col-md-7">
-          <h2 class="featurette-heading">Oh yeah, it's that good. <span class="text-muted">See for yourself.</span></h2>
-          <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+          <h2 class="featurette-heading">Помогите проекту.</h2>
+          <p class="lead">Вы можете помочь развитию проекта, внеся свой вклад через Github.</p>
+          <p><a href="https://github.com/alexsasha/CompactCMS" class="btn btn-success btn-lg" role="button">Перейти на Github</a></p>
         </div>
       </div>
 
@@ -101,13 +102,7 @@
       <!-- /END THE FEATURETTES -->
 
 
-      <!-- FOOTER -->
-      <footer>
-        <p class="pull-right"><a href="#">Наверх</a></p>
-        <p>&copy; 2014 CompactCMS &middot; <a href="#">О нас</a></p>
-      </footer>
-
-    </div><!-- /.container -->
+      
 
 
 <?php if($posts):?>
