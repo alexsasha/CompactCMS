@@ -2,7 +2,8 @@
 class Admin extends CI_Controller {
 
 	var $posts_per_page,
-	$default_taxonomy = 'category';
+	$default_taxonomy = 'category',
+	$is_install;
 
 	public function __construct()
 	{
@@ -11,10 +12,11 @@ class Admin extends CI_Controller {
 		$this->load->model(array('user', 'query'));
 		$this->load->helper(array('url', 'query'));
 
-		$is_install = $this->config->get('is_install');
-		if( ! $is_install && uri_string() != "admin/install")
+		$this->is_install = $this->config->get('is_install');
+
+		if( ! $this->is_install && uri_string() != "admin/install")
 			redirect_admin('install');
-		elseif( $is_install && ! $this->user->is_admin() 
+		elseif( $this->is_install && ! $this->user->is_admin() 
 		 	&& uri_string() != "admin/login")
 		 	redirect_login();
 		
@@ -812,6 +814,9 @@ class Admin extends CI_Controller {
 
 	public function install()
 	{
+		if($this->is_install)
+			redirect_admin();
+		
 		$this->load->helper(array('form', 'url'));
 		$this->load->library('form_validation');
 
@@ -924,8 +929,6 @@ class Admin extends CI_Controller {
 		}
 		else
 		{
-
-
 			$this->config->set('sitename', $sitename);
 			$this->config->set('sitedesc', $sitedesc);
 			
@@ -942,6 +945,7 @@ class Admin extends CI_Controller {
 			);
 
 			$this->config->set('is_install', true);
+			$this->is_install = '1';
 
 			//default values
 			$this->config->set('timezones', 'UP4');

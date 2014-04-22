@@ -4,7 +4,8 @@ class Templater extends CI_Controller {
 
 	var $posts_per_page,
 	$title_sep = ' | ',
-	$default_taxonomy = 'category';
+	$default_taxonomy = 'category',
+	$is_install;
 
 	public function __construct()
 	{
@@ -13,8 +14,9 @@ class Templater extends CI_Controller {
 		$this->load->library('template');
 		$this->load->helper(array('template', 'query', 'url'));
 
-		$is_install = $this->config->get('is_install');
-		if( ! $is_install && uri_string() != "admin/install")
+		$this->is_install = $this->config->get('is_install');
+
+		if( ! $this->is_install && uri_string() != "admin/install")
 			redirect_admin('install');
 
 		$this->posts_per_page = $this->config->get('posts_per_page');
