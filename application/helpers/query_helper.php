@@ -14,6 +14,17 @@ function get_permalink($post_id)
 	return site_url("post/" . $post_id);;
 }
 
+function get_termlink($term_id)
+{
+	return site_url("category/" . $term_id);
+}
+
+function get_authorlink($user_id)
+{
+	return site_url("author/" . $user_id);
+}
+
+
 function get_date($post_id, $date_format = NULL)
 {
 	$CI = $GLOBALS["CI"];

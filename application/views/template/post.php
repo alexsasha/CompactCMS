@@ -1,7 +1,11 @@
 <?php get_header(); ?>
 
-<h1><?php echo $post->post_title; ?></h1>
+<div class="container" id="post">
+	
+	<h1><?php echo $post->post_title; ?></h1>
 
-<div><?php echo $post->post_content; ?></div>
+	<div class="lead"><?php echo $post->post_content; ?></div>
+
+</div>
 
 <?php get_footer(); ?>

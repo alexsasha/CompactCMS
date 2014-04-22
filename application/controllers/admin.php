@@ -7,16 +7,17 @@ class Admin extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
 		$this->load->model(array('user', 'query'));
 		$this->load->helper(array('url', 'query'));
 
-		//$this->output->enable_profiler(TRUE);
-
-		//Если пользователь не админ перенаправляем на страницу авторизации
-		if( ! $this->user->is_admin() 
+		$is_install = $this->config->get('is_install');
+		if( ! $is_install && uri_string() != "admin/install")
+			redirect_admin('install');
+		elseif( $is_install && ! $this->user->is_admin() 
 		 	&& uri_string() != "admin/login")
 		 	redirect_login();
-
+		
 		$this->posts_per_page = $this->config->get('admin_posts_per_page');
 	}
 
@@ -37,6 +38,8 @@ class Admin extends CI_Controller {
 		
 		$this->load_view('panel', $data);
 	}
+
+
 
 
 	/* Обработка действий с постами */
@@ -275,7 +278,11 @@ class Admin extends CI_Controller {
 			tinymce.init({
 			    selector: '#content',
 			    height: 500,
-			    language: 'ru'
+			    language: 'ru',
+			    plugins: [
+			        'link'
+			    ],
+			    toolbar: ' undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link'
 			});
 		";  
 		
@@ -799,10 +806,161 @@ class Admin extends CI_Controller {
 		}
 	}
 
+	public function install()
+	{
+		$this->load->helper(array('form', 'url'));
+		$this->load->library('form_validation');
+
+		$this->db->query("
+			CREATE TABLE IF NOT EXISTS `cc_options` (
+			  `option_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			  `option_name` varchar(64) NOT NULL DEFAULT '',
+			  `option_value` longtext NOT NULL,
+			  PRIMARY KEY (`option_id`),
+			  UNIQUE KEY `option_name` (`option_name`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+		");
+		
+		$this->db->query("
+			CREATE TABLE IF NOT EXISTS `cc_posts` (
+			  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			  `post_date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `post_content` longtext NOT NULL,
+			  `post_title` text NOT NULL,
+			  `post_status` varchar(20) NOT NULL DEFAULT 'publish',
+			  `post_name` varchar(200) NOT NULL DEFAULT '',
+			  `post_modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `post_author` bigint(20) NOT NULL DEFAULT '1',
+			  PRIMARY KEY (`ID`),
+			  KEY `post_name` (`post_name`),
+			  KEY `type_status_date` (`post_status`,`post_date`,`ID`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
+		");
+
+		$this->db->query("
+			CREATE TABLE IF NOT EXISTS `cc_terms` (
+			  `term_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			  `taxonomy` varchar(32) NOT NULL DEFAULT '',
+			  `name` varchar(200) NOT NULL,
+			  `slug` varchar(200) NOT NULL,
+			  `description` longtext NOT NULL,
+			  `parent` bigint(20) unsigned NOT NULL DEFAULT '0',
+			  `count` bigint(20) NOT NULL DEFAULT '0',
+			  PRIMARY KEY (`term_id`),
+			  KEY `name` (`name`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
+		");
+
+		$this->db->query("
+			CREATE TABLE IF NOT EXISTS `cc_term_relationships` (
+			  `object_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+			  `term_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+			  PRIMARY KEY (`object_id`,`term_id`),
+			  KEY `term_taxonomy_id` (`term_id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
+		");
+
+		$this->db->query("
+			CREATE TABLE IF NOT EXISTS `cc_users` (
+			  `ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			  `user_login` varchar(60) NOT NULL DEFAULT '',
+			  `user_pass` varchar(100) NOT NULL DEFAULT '',
+			  `user_email` varchar(100) NOT NULL DEFAULT '',
+			  `user_registered` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+			  `user_status` int(11) NOT NULL DEFAULT '0',
+			  PRIMARY KEY (`ID`),
+			  KEY `user_login_key` (`user_login`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=0;
+		");
+
+		$sitename = $this->input->post('sitename', TRUE);
+		$sitedesc = $this->input->post('sitedesc', TRUE);
+		$login = $this->input->post('login', TRUE);
+		$pass = $this->input->post('pass', TRUE);
+		$email = $this->input->post('email', TRUE);
+
+		$install_rules = array(
+			array(
+				'field'   => 'sitename', 
+				'label'   => '"Название сайта"', 
+				'rules'   => 'required'
+			),
+			array(
+				'field'   => 'sitedesc', 
+				'label'   => '"Краткое описание"', 
+				'rules'   => ''
+			),
+			array(
+				'field'   => 'login', 
+				'label'   => '"Логин"', 
+				'rules'   => 'required|alpha_dash|min_length[6]|max_length[20]'
+			),
+			array(
+				'field'   => 'email', 
+				'label'   => '"E-mail"', 
+				'rules'   => 'required|valid_email|is_unique[users.user_email]'
+			),
+			array(
+				'field'   => 'pass', 
+				'label'   => '"Пароль"', 
+				'rules'   => 'required|alpha_dash|matches[pass2]|min_length[6]'
+			),
+			array(
+				'field'   => 'pass2', 
+				'label'   => '"Подтвердите пароль"', 
+				'rules'   => 'required|alpha_dash|min_length[6]'
+			)
+		);
+		$this->form_validation->set_rules($install_rules);
+
+		if ($this->form_validation->run() == FALSE)
+		{
+			$data['title'] = "Установка нового сайта";
+			$this->load->view('admin/install', $data);
+		}
+		else
+		{
+
+
+			$this->config->set('sitename', $sitename);
+			$this->config->set('sitedesc', $sitedesc);
+			
+			$this->load->library('encrypt');
+			$encoded_pass = $this->encrypt->encode($pass);
+
+			$this->user->update_user(
+				array(
+					'user_login' => $login,
+					'user_pass' => $encoded_pass,
+					'user_email' => $email,
+					'user_status' => 1
+				)
+			);
+
+			$this->config->set('is_install', true);
+
+			//default values
+			$this->config->set('timezones', 'UP4');
+			$this->config->set('date_format', 'Y-m-d H:i:s');
+			$this->config->set('posts_per_page', '10');
+			$this->config->set('admin_posts_per_page', '10');
+			
+			$post_args['post_title'] = 'Пример страницы';
+			$post_args['post_content'] = 'А здесь содержание вашей первой записи...';
+	
+			$this->query->update_post($post_args);
+
+			$data['title'] = "Установка прошла успешно";
+			$data['action'] = "Установка прошла успешно... <br /> <a href='" . base_url('admin/login') ."'>Перейти на страницу авторизации</a>";
+			$data['reffer'] = base_url();
+
+			$this->load_view('success', $data);
+		}
+	}
+
 	/* Служебные методы */
 	public function _password_check($arg, $auth)
 	{
-		
 		$auth = explode("/SEPARATOR/", $auth);
 		if($this->user->check_login($auth[0], $auth[1])) 
 		{

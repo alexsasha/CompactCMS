@@ -22,7 +22,7 @@
 				<?php foreach ($terms as $term): ?>
 
 				    <tr>
-				    	<td><a href=""><?php echo $term->name; ?></a></td>
+				    	<td><a href="<?php echo site_url('admin/term_update/' . $term->term_id); ?>"><?php echo $term->name; ?></a></td>
 				    	<td><?php echo $term->description; ?></td>
 				    	<td><?php echo $term->slug; ?></td>
 						<td class="function-cell">

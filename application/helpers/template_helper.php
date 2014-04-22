@@ -21,7 +21,7 @@ function get_sidebar()
 function show_404_page()
 {
 	$Templ = new Template;
-	if($Templ->get('404') === FALSE)
+	if($Templ->get('404', array('title' => 'Страница не найдена')) === FALSE)
 	{
 		show_404();
 	}

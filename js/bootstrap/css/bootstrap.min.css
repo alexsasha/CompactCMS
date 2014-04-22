@@ -43,7 +43,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,su
 }
 
 /* Posts */
-#posts .alert{max-width: 90%;margin-left: auto;margin-right: auto;}
+.panel .alert{max-width: 90%;margin-left: auto;margin-right: auto;}
 .table .function-cell{text-align: center;}
 #posts .btn{text-transform: uppercase;}
 #posts .btn .glyphicon{position: relative; top: 2px;left: 3px;}
@@ -87,3 +87,6 @@ article,aside,details,figcaption,figure,footer,header,hgroup,main,nav,section,su
 
 #panel .nav{margin: 20px 0;}
 #panel .nav .badge{position: relative;top: -3px;}
+#post, #error, #category, #author, #index{
+	padding-top: 90px;
+}

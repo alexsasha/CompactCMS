@@ -43,6 +43,7 @@
 				    	<a href="<?php echo site_url('admin/untrash/' . $post->ID); ?>" class="glyphicon glyphicon-ok-circle" title="Восстановить запись"></a>
 				    	<a href="<?php echo site_url('admin/delete_post/' . $post->ID); ?>" class="glyphicon glyphicon-remove-circle" title="Удалить навсегда" onclick="if (!confirm('Вы уверены, что хотите удалить навсегда?')) return false;"></a>
 				    	<?php else: ?>
+				    	<a href="<?php echo site_url('post/' . $post->ID); ?>" class="glyphicon glyphicon-eye-open" title="Просмотреть запись" target="_blank"></a>
 				    	<a href="<?php echo site_url('admin/delete/' . $post->ID); ?>" class="glyphicon glyphicon-trash" title="Удалить запись" onclick="if (!confirm('Вы уверены, что хотите удалить запись?')) return false;"></a>
 				    	<?php endif; ?>
 					</td>

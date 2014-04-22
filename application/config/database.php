@@ -48,12 +48,24 @@
 $active_group = 'default';
 $active_record = TRUE;
 
+/*
+| 
+| Укажите верные данные для доступа к БД.
+|
+*/
 $db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
 $db['default']['password'] = 'root';
 $db['default']['database'] = 'simpla';
+
+/*
+| 
+| Данные ниже изменяйте с осторожностью.
+| Только в случае, если знаете что делаете.
+|
+*/
 $db['default']['dbdriver'] = 'mysql';
-$db['default']['dbprefix'] = 'sm_';
+$db['default']['dbprefix'] = 'cc_'; //нельзя менять
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;

@@ -17,6 +17,16 @@ class MY_Config extends CI_Config {
     	$CI =& get_instance(); 
 		$CI->load->database();
 
+    	$CI->db->query("
+			CREATE TABLE IF NOT EXISTS `cc_options` (
+			  `option_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			  `option_name` varchar(64) NOT NULL DEFAULT '',
+			  `option_value` longtext NOT NULL,
+			  PRIMARY KEY (`option_id`),
+			  UNIQUE KEY `option_name` (`option_name`)
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+		");
+		
 		$table = $this->option_table;
 	   	$CI->db->dbprefix($table);
 
