@@ -63,7 +63,7 @@
 				<input type="password" class="form-control" name="pass2" value="">
 			</label>
 		</div>
-		<button class="btn btn-md btn-primary btn-block" type="submit">Сохранить</button>
+		<button class="btn btn-md btn-primary btn-block" type="submit">Установить</button>
 	</form>
 
 	</div> <!-- /container -->

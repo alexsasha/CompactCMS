@@ -187,6 +187,7 @@ class Admin extends CI_Controller {
 		$this->form_validation->set_rules($valid_rules);
 
 		$terms = $this->query_tax->get_terms($taxonomy);
+		$terms_names = array();
 
 		foreach ($terms as $term) 
 		{
@@ -194,7 +195,7 @@ class Admin extends CI_Controller {
 		}
 
 		$data['terms'] = $terms_names;
-		$data['title'] = "Создать новую запись";
+
 		$data['head'][] = "<script type='text/javascript' src='" . base_url() . "js/tinymce/tinymce.min.js'></script>";
 		$data['js'] = "
 			tinymce.init({
@@ -256,10 +257,13 @@ class Admin extends CI_Controller {
 		$data = (array) $post;
 
 		$terms = $this->query_tax->get_terms($taxonomy);
+		$terms_names = array();
+
 		foreach ($terms as $term) 
 		{
 			$terms_names[$term->term_id] = $term->name;
 		}
+
 		$data['terms'] = $terms_names;
 
 		$terms_checked = $this->query_tax->get_post_terms($id);

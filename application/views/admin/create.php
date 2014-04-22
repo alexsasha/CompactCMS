@@ -7,18 +7,20 @@
 
 		<div><textarea class="form-control" name="content" id="content" cols="30" rows="10" placeholder="Содержание"><?php echo set_value('content'); ?></textarea></div>
 		
+		<?php if($terms): ?>
 		<div>
 			<label>Категория: </label>
 			<?php 
-			foreach ($terms as $id => $name) 
-			{
-				$checked = FALSE;
-				if(isset($terms_checked) && in_array($id, $terms_checked))
-					$checked = TRUE;
-				echo "<div>" . form_checkbox('terms[]', $id, $checked) . " <span>$name</span></div>";
-			}
+				foreach ($terms as $id => $name) 
+				{
+					$checked = FALSE;
+					if(isset($terms_checked) && in_array($id, $terms_checked))
+						$checked = TRUE;
+					echo "<div>" . form_checkbox('terms[]', $id, $checked) . " <span>$name</span></div>";
+				}
 			?>
 		</div>
+		<?php endif; ?>
 
 		<button class="btn btn-md btn-primary" type="submit">Опубликовать</button>
 	</form>

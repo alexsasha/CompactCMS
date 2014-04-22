@@ -53,10 +53,10 @@ $active_record = TRUE;
 | Укажите верные данные для доступа к БД.
 |
 */
-$db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'root';
-$db['default']['password'] = 'root';
-$db['default']['database'] = 'simpla';
+$db['default']['hostname'] = '';
+$db['default']['username'] = '';
+$db['default']['password'] = '';
+$db['default']['database'] = '';
 
 /*
 | 
@@ -65,7 +65,6 @@ $db['default']['database'] = 'simpla';
 |
 */
 $db['default']['dbdriver'] = 'mysql';
-$db['default']['dbprefix'] = 'cc_'; //нельзя менять
 $db['default']['pconnect'] = TRUE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
@@ -76,6 +75,7 @@ $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
 $db['default']['stricton'] = FALSE;
 
+$db['default']['dbprefix'] = 'cc_'; //нельзя изменять
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */

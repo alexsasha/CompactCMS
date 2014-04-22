@@ -14,7 +14,15 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost:8888/compactcms/';
+
+/*
+|
+| Укажите адрес вашего сайта с указанием слеша в конце.
+| Например: $config['base_url']	= 'http://example.com/'; 
+|
+*/
+
+$config['base_url']	= '';
 
 /*
 |--------------------------------------------------------------------------
