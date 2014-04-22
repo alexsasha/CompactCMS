@@ -22,7 +22,7 @@
             <div class="container">
                 <div class="carousel-caption carousel-caption-2">
                     <h1>MVC</h1>
-                    <p>Используестя Model-View-Controller подход к архитектуре</p>
+                    <p>Используется Model-View-Controller подход к архитектуре</p>
                 </div>
             </div>
         </div>

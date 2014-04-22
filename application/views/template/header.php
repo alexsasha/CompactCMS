@@ -36,6 +36,7 @@
                             <li><a href="<?php echo site_url(); ?>">Главная</a></li>
                             <li><a href="<?php echo get_permalink(1); ?>">Пример страницы</a></li>
                             <li><a href="<?php echo site_url('admin'); ?>"><b>АДМИН-ПЕНЕЛЬ</b></a></li>
+                            <li><a href="https://github.com/alexsasha/CompactCMS" target="_blank">Скачать с GitHub</a></li>
                         </ul>
                     </div>
                 </div>
