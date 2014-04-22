@@ -468,7 +468,7 @@ class Admin extends CI_Controller {
 			array(
 				'field'   => 'login', 
 				'label'   => '"Логин"', 
-				'rules'   => 'required|alpha_dash|min_length[6]|max_length[20]'
+				'rules'   => 'required|alpha_dash|min_length[4]|max_length[20]'
 			),
 			array(
 				'field'   => 'email', 
@@ -893,7 +893,7 @@ class Admin extends CI_Controller {
 			array(
 				'field'   => 'login', 
 				'label'   => '"Логин"', 
-				'rules'   => 'required|alpha_dash|min_length[6]|max_length[20]'
+				'rules'   => 'required|alpha_dash|min_length[4]|max_length[20]'
 			),
 			array(
 				'field'   => 'email', 
